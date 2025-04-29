@@ -6,6 +6,7 @@ const {
   getAllMyResumes,
   getResumeById,
   deleteResume,
+  updateResume,
 } = require("./controllers");
 const { isEmployee } = require("../auth/middlewares");
 const { validateResume } = require("./middlewares");
@@ -16,6 +17,13 @@ router.post(
   isEmployee,
   validateResume,
   createResume
+);
+
+router.put(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  validateResume,
+  updateResume
 );
 
 router.get(

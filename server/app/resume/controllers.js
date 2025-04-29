@@ -153,9 +153,121 @@ const deleteResume = async (req, res) => {
   }
 };
 
+const updateResume = async (req, res) => {
+  try {
+    const resume = await Resume.findByPk(req.params.id);
+
+    if (!resume) {
+      return res.status(404).json({ message: "Not Found" });
+    }
+
+    if (resume.user_id !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const {
+      first_name,
+      last_name,
+      phone,
+      birthday,
+      gender,
+      about,
+      position,
+      salary,
+      salary_type,
+      main_language,
+      skills,
+      citizenship,
+      city_id,
+    } = req.body;
+
+    await resume.update({
+      first_name,
+      last_name,
+      phone,
+      birthday,
+      gender,
+      about,
+      position,
+      salary,
+      salary_type,
+      main_language,
+      skills,
+      citizenship,
+      city_id,
+    });
+
+    await WorkingHistory.destroy({
+      where: {
+        resume_id: resume.id,
+      },
+    });
+
+    await ForeignLanguage.destroy({
+      where: {
+        resume_id: resume.id,
+      },
+    });
+
+    await Education.destroy({
+      where: {
+        resume_id: resume.id,
+      },
+    });
+
+    await ResumeEmploymentType.destroy({
+      where: {
+        resume_id: resume.id,
+      },
+    });
+
+    if (req.body.working_histories && req.body.working_histories.length > 0) {
+      req.body.working_histories.forEach(async (history) => {
+        await WorkingHistory.create({
+          resume_id: resume.id,
+          ...history,
+        });
+      });
+    }
+
+    if (req.body.education && req.body.education.length > 0) {
+      req.body.education.forEach(async (education) => {
+        await Education.create({
+          resume_id: resume.id,
+          ...education,
+        });
+      });
+    }
+
+    if (req.body.foreign_languages && req.body.foreign_languages.length > 0) {
+      req.body.foreign_languages.forEach(async (language) => {
+        await ForeignLanguage.create({
+          resume_id: resume.id,
+          ...language,
+        });
+      });
+    }
+
+    if (req.body.employment_types && req.body.employment_types.length > 0) {
+      req.body.employment_types.forEach(async (employment_type_id) => {
+        await ResumeEmploymentType.create({
+          resume_id: resume.id,
+          employment_type_id,
+        });
+      });
+    }
+
+    return res.status(200).json(resume);
+  } catch (error) {
+    console.error("Ошибка при редактировании резюме:", error);
+    return res.status(500).json({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   createResume,
   getAllMyResumes,
   getResumeById,
   deleteResume,
+  updateResume,
 };
