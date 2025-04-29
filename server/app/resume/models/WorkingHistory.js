@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../../config/db");
-const Resume = require("./Resume");
 
 const WorkingHistory = sequelize.define(
   "WorkingHistory",
@@ -31,7 +30,5 @@ const WorkingHistory = sequelize.define(
     timestamps: false,
   }
 );
-
-WorkingHistory.belongsTo(Resume, { foreignKey: "resume_id" });
 
 module.exports = WorkingHistory;

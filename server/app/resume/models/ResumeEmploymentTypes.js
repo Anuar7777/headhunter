@@ -21,6 +21,7 @@ Resume.belongsToMany(EmploymentType, {
   through: ResumeEmploymentType,
   foreignKey: "resume_id",
   otherKey: "employment_type_id",
+  as: "employment_types",
 });
 
 EmploymentType.belongsToMany(Resume, {

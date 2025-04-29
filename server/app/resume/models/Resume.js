@@ -3,6 +3,9 @@ const sequelize = require("../../../config/db");
 const City = require("../../region/City");
 const User = require("../../auth/User");
 const Country = require("../../region/Country");
+const Education = require("./Education");
+const ForeignLanguage = require("./ForeignLanguage");
+const WorkingHistory = require("./WorkingHistory");
 
 const Resume = sequelize.define(
   "resume",
@@ -59,7 +62,17 @@ const Resume = sequelize.define(
 );
 
 Resume.belongsTo(User, { foreignKey: "user_id" });
-Resume.belongsTo(Country, { foreignKey: "citizenship" });
-Resume.belongsTo(City, { foreignKey: "city_id" });
+Resume.belongsTo(Country, { foreignKey: "citizenship", as: "country" });
+Resume.belongsTo(City, { foreignKey: "city_id", as: "city" });
+
+Resume.hasMany(Education, { foreignKey: "resume_id", as: "education" });
+Resume.hasMany(ForeignLanguage, {
+  foreignKey: "resume_id",
+  as: "foreign_language",
+});
+Resume.hasMany(WorkingHistory, {
+  foreignKey: "resume_id",
+  as: "working_history",
+});
 
 module.exports = Resume;

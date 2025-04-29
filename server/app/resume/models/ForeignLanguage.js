@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../../config/db");
-const Resume = require("./Resume");
 
 const ForeignLanguage = sequelize.define(
   "ForeignLanguage",
@@ -19,7 +18,5 @@ const ForeignLanguage = sequelize.define(
     timestamps: false,
   }
 );
-
-ForeignLanguage.belongsTo(Resume, { foreignKey: "resume_id" });
 
 module.exports = ForeignLanguage;

@@ -17,7 +17,7 @@ app.use("/api/region", require("./app/region/routes"));
 app.use("/api/skills", require("./app/skills/routes"));
 app.use("/api/employment-types", require("./app/employment-types/routes"));
 app.use("/api/languages", require("./app/languages/routes"));
-app.use("/api/resume", require("./app/resume/routes"));
+app.use("/api/resumes", require("./app/resume/routes"));
 
 app.get("/", (req, res) => {
   res.status(200).send("OK");
