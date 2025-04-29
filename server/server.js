@@ -13,6 +13,10 @@ app.use(passport.initialize());
 require("./app/auth/passport");
 
 app.use("/api/auth", require("./app/auth/routes"));
+app.use("/api/region", require("./app/region/routes"));
+app.use("/api/skills", require("./app/skills/routes"));
+app.use("/api/employment-types", require("./app/employment-types/routes"));
+app.use("/api/languages", require("./app/languages/routes"));
 
 app.get("/", (req, res) => {
   res.status(200).send("OK");
