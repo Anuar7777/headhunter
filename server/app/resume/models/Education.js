@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const sequelize = require("../../../config/db");
 const Resume = require("./Resume");
 
 const Education = sequelize.define(
@@ -28,7 +28,7 @@ const Education = sequelize.define(
   },
   {
     tableName: "Education",
-    timestamp: false,
+    timestamps: false,
   }
 );
 

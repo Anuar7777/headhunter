@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const sequelize = require("../../../config/db");
 const City = require("../../region/City");
 const User = require("../../auth/User");
 const Country = require("../../region/Country");

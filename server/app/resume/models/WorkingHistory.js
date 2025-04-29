@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const sequelize = require("../../../config/db");
 const Resume = require("./Resume");
 
 const WorkingHistory = sequelize.define(
@@ -28,7 +28,7 @@ const WorkingHistory = sequelize.define(
   },
   {
     tableName: "WorkingHistory",
-    timestamp: false,
+    timestamps: false,
   }
 );
 

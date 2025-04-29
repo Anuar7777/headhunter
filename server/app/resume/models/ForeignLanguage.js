@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
+const sequelize = require("../../../config/db");
 const Resume = require("./Resume");
 
 const ForeignLanguage = sequelize.define(
@@ -16,7 +16,7 @@ const ForeignLanguage = sequelize.define(
   },
   {
     tableName: "ForeignLanguage",
-    timestamp: false,
+    timestamps: false,
   }
 );
 

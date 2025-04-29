@@ -12,7 +12,7 @@ const sendVerificationEmail = async (req, res) => {
     await AuthCode.create({
       email: candidate,
       code,
-      valid_till: new Date(Date.now() + 900000),
+      valid_till: new Date(Date.now() + 2 * 60 * 60 * 1000),
     });
 
     await sendMail(candidate, "Authorization code from headhunter.kz", code);
