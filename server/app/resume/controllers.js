@@ -132,8 +132,30 @@ const getResumeById = async (req, res) => {
   }
 };
 
+const deleteResume = async (req, res) => {
+  try {
+    const resume = await Resume.findByPk(req.params.id);
+
+    if (!resume) {
+      return res.status(404).json({ message: "Not Found" });
+    }
+
+    if (resume.user_id !== req.user.id) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    await resume.destroy();
+
+    res.status(200).json({ message: "Резюме успешно удалено" });
+  } catch (error) {
+    console.error("Ошибка при удалении резюме:", error);
+    return res.status(500).json({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   createResume,
   getAllMyResumes,
   getResumeById,
+  deleteResume,
 };

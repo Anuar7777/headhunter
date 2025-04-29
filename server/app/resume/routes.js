@@ -5,6 +5,7 @@ const {
   createResume,
   getAllMyResumes,
   getResumeById,
+  deleteResume,
 } = require("./controllers");
 const { isEmployee } = require("../auth/middlewares");
 const { validateResume } = require("./middlewares");
@@ -28,6 +29,12 @@ router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   getResumeById
+);
+
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  deleteResume
 );
 
 module.exports = router;
