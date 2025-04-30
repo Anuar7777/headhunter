@@ -9,6 +9,7 @@ app.use(logger("dev"));
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(passport.initialize());
+app.use(express.static(__dirname + "/public"));
 
 require("./app/auth/passport");
 
@@ -19,7 +20,7 @@ app.use("/api/employment-types", require("./app/employment-types/routes"));
 app.use("/api/languages", require("./app/languages/routes"));
 app.use("/api/resumes", require("./app/resume/routes"));
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.status(200).send("OK");
 });
 
