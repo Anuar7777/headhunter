@@ -111,10 +111,63 @@ const deleteVacancy = async (req, res) => {
   }
 };
 
+const updateVacancy = async (req, res) => {
+  try {
+    const vacancy = await Vacancy.findByPk(req.params.id);
+
+    if (!vacancy) {
+      return res.status(404).json({ message: "Not Found" });
+    }
+
+    if (vacancy.company_id !== req.user.company_id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    const {
+      name,
+      salary_from,
+      salary_to,
+      salary_type,
+      address,
+      description,
+      skills,
+      about_company,
+      main_language,
+      specialization_id,
+      city_id,
+      employment_type_id,
+      experience_id,
+    } = req.body;
+
+    await vacancy.update({
+      name,
+      salary_from,
+      salary_to,
+      salary_type,
+      address,
+      description,
+      skills,
+      about_company,
+      main_language,
+      specialization_id,
+      city_id,
+      employment_type_id,
+      experience_id,
+      user_id: req.user.id,
+    });
+
+    res.status(200).send({ vacancy });
+  } catch (error) {
+    console.error("Ошибка при редактировании вакансии:", error);
+    return res.status(500).json({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   getAvailableExperience,
   createVacancy,
   getCompanyVacancies,
   getVacancyById,
   deleteVacancy,
+  updateVacancy,
 };
