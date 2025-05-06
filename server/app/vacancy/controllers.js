@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Company = require("../auth/Company");
 const EmploymentType = require("../employment-types/EmploymentType");
 const City = require("../region/City");
@@ -163,6 +164,65 @@ const updateVacancy = async (req, res) => {
   }
 };
 
+const searchVacancy = async (req, res) => {
+  try {
+    const {
+      q,
+      salary,
+      salary_type,
+      city_id,
+      employment_type_id,
+      experience_id,
+      specialization_id,
+    } = req.query;
+
+    const options = {};
+
+    if (q) {
+      options[Op.or] = [
+        { name: { [Op.iLike]: `%${q}%` } },
+        { description: { [Op.iLike]: `%${q}%` } },
+        { skills: { [Op.iLike]: `%${q}%` } },
+        { about_company: { [Op.iLike]: `%${q}%` } },
+      ];
+    }
+
+    if (salary) {
+      options[Op.and] = [
+        { salary_from: { [Op.lte]: Number(salary) } },
+        { salary_to: { [Op.gte]: Number(salary) } },
+      ];
+    }
+
+    if (salary_type) {
+      options.salary_type = salary_type;
+    }
+
+    if (city_id) {
+      options.city_id = Number(city_id);
+    }
+
+    if (specialization_id) {
+      options.specialization_id = Number(specialization_id);
+    }
+
+    if (employment_type_id) {
+      options.employment_type_id = Number(employment_type_id);
+    }
+
+    if (experience_id) {
+      options.experience_id = Number(experience_id);
+    }
+
+    const vacancies = await Vacancy.findAll({ where: options });
+
+    return res.status(200).send({ vacancies });
+  } catch (error) {
+    console.error("Ошибка при поиске вакансий:", error);
+    return res.status(500).json({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   getAvailableExperience,
   createVacancy,
@@ -170,4 +230,5 @@ module.exports = {
   getVacancyById,
   deleteVacancy,
   updateVacancy,
+  searchVacancy,
 };

@@ -10,6 +10,7 @@ const {
   getVacancyById,
   deleteVacancy,
   updateVacancy,
+  searchVacancy,
 } = require("./controllers");
 
 router.get("/experience", getAvailableExperience);
@@ -28,7 +29,7 @@ router.get(
   isManager,
   getCompanyVacancies
 );
-
+router.get("/search", searchVacancy);
 router.get("/:id", getVacancyById);
 router.delete(
   "/:id",
