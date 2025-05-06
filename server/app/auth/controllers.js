@@ -129,6 +129,7 @@ const signIn = async (req, res) => {
     }
 
     const role = await Role.findByPk(user.role_id);
+    const company = await Company.findByPk(user.company_id);
 
     const token = jwt.sign(
       {
@@ -140,6 +141,7 @@ const signIn = async (req, res) => {
           id: role.id,
           name: role.name,
         },
+        company_id: company.id,
       },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: 24 * 60 * 60 }

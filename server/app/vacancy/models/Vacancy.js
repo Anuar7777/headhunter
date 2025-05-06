@@ -60,7 +60,6 @@ const Vacancy = sequelize.define(
 Vacancy.belongsTo(City, { foreignKey: "city_id", as: "city" });
 Vacancy.belongsTo(Company, { foreignKey: "company_id", as: "company" });
 Vacancy.belongsTo(User, { foreignKey: "user_id", as: "creator" });
-Vacancy.belongsTo(Company, { foreignKey: "company_id", as: "company" });
 Vacancy.belongsTo(Specialization, {
   foreignKey: "specialization_id",
   as: "specialization",
