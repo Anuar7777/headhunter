@@ -1,10 +1,19 @@
+require("dotenv").config();
+
 const express = require("express");
 const logger = require("morgan");
+const cors = require("cors");
 const passport = require("passport");
 
 const app = express();
+const PORT = process.env.PORT;
 
-require("dotenv").config();
+const cors_options = {
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+};
+app.use(cors(cors_options));
+
 app.use(logger("dev"));
 app.use(express.urlencoded());
 app.use(express.json());
@@ -26,6 +35,6 @@ app.get("/api", (req, res) => {
   res.status(200).send("OK");
 });
 
-app.listen(3000, () => {
-  console.log("Server is listening on port 3000");
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
