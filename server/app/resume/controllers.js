@@ -7,6 +7,7 @@ const Role = require("../auth/Role");
 const EmploymentType = require("../employment-types/EmploymentType");
 const City = require("../region/City");
 const Country = require("../region/Country");
+const { Op } = require("sequelize");
 
 const createResume = async (req, res) => {
   try {
@@ -264,10 +265,59 @@ const updateResume = async (req, res) => {
   }
 };
 
+const searchResume = async (req, res) => {
+  try {
+    const { q, salary_from, salary_to, salary_type, city_id, citizenship } =
+      req.query;
+
+    const options = {};
+
+    if (q) {
+      options[Op.or] = [
+        { first_name: { [Op.iLike]: `%${q}%` } },
+        { last_name: { [Op.iLike]: `%${q}%` } },
+        { position: { [Op.iLike]: `%${q}%` } },
+        { about: { [Op.iLike]: `%${q}%` } },
+        { skills: { [Op.iLike]: `%${q}%` } },
+      ];
+    }
+
+    if (salary_from && !salary_to) {
+      options.salary = { [Op.gte]: Number(salary_from) };
+    } else if (!salary_from && salary_to) {
+      options.salary = { [Op.lte]: Number(salary_to) };
+    } else if (salary_from && salary_to) {
+      options.salary = {
+        [Op.between]: [Number(salary_from), Number(salary_to)],
+      };
+    }
+
+    if (salary_type) {
+      options.salary_type = salary_type;
+    }
+
+    if (city_id) {
+      options.city_id = Number(city_id);
+    }
+
+    if (citizenship) {
+      options.citizenship = Number(citizenship);
+    }
+
+    const resumes = await Resume.findAll({ where: options });
+
+    return res.status(200).send({ resumes });
+  } catch (error) {
+    console.error("Ошибка при поиске резюме:", error);
+    return res.status(500).json({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   createResume,
   getAllMyResumes,
   getResumeById,
   deleteResume,
   updateResume,
+  searchResume,
 };

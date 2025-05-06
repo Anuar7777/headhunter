@@ -7,6 +7,7 @@ const {
   getResumeById,
   deleteResume,
   updateResume,
+  searchResume,
 } = require("./controllers");
 const { isEmployee } = require("../auth/middlewares");
 const { validateResume } = require("./middlewares");
@@ -32,7 +33,11 @@ router.get(
   isEmployee,
   getAllMyResumes
 );
-
+router.get(
+  "/search",
+  passport.authenticate("jwt", { session: false }),
+  searchResume
+);
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
