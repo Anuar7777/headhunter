@@ -90,9 +90,31 @@ const getVacancyById = async (req, res) => {
   }
 };
 
+const deleteVacancy = async (req, res) => {
+  try {
+    const vacancy = await Vacancy.findByPk(req.params.id);
+
+    if (!vacancy) {
+      return res.status(404).json({ message: "Not Found" });
+    }
+
+    if (vacancy.company_id !== req.user.company_id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    await vacancy.destroy();
+
+    res.status(200).end();
+  } catch (error) {
+    console.error("Ошибка при удалении вакансии:", error);
+    return res.status(500).json({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   getAvailableExperience,
   createVacancy,
   getCompanyVacancies,
   getVacancyById,
+  deleteVacancy,
 };

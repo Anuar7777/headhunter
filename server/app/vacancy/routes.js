@@ -8,6 +8,7 @@ const {
   createVacancy,
   getCompanyVacancies,
   getVacancyById,
+  deleteVacancy,
 } = require("./controllers");
 
 router.get("/experience", getAvailableExperience);
@@ -28,5 +29,11 @@ router.get(
 );
 
 router.get("/:id", getVacancyById);
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  isManager,
+  deleteVacancy
+);
 
 module.exports = router;
