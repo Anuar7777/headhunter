@@ -8,7 +8,7 @@ const ForeignLanguage = require("./ForeignLanguage");
 const WorkingHistory = require("./WorkingHistory");
 
 const Resume = sequelize.define(
-  "resume",
+  "Resume",
   {
     first_name: {
       type: DataTypes.STRING,
@@ -56,7 +56,7 @@ const Resume = sequelize.define(
     },
   },
   {
-    tableName: "resume",
+    tableName: "Resume",
     underscored: true,
   }
 );

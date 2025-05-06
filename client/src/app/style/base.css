@@ -35,3 +35,107 @@ main {
   display: block;
   margin: 0 auto;
 }
+
+.flex {
+  display: flex;
+}
+
+.flex-cl {
+  flex-direction: column;
+}
+
+.flex-jc-c {
+  justify-content: center;
+}
+
+.flex-jc-sb {
+  justify-content: space-between;
+}
+
+.flex-al-c {
+  align-items: center;
+}
+
+.flex-al-sb {
+  align-items: space-between;
+}
+
+.p0 {
+  padding: 0px;
+}
+
+.p1 {
+  padding: 5px;
+}
+
+.p2 {
+  padding: 10px;
+}
+
+.p3 {
+  padding: 15px;
+}
+
+.p4 {
+  padding: 20px;
+}
+
+.p5 {
+  padding: 25px;
+}
+
+.p6 {
+  padding: 30px;
+}
+
+.p8 {
+  padding: 40px;
+}
+
+.ptb8 {
+  padding: 40px 0px;
+}
+
+.m0 {
+  margin: 0px;
+}
+
+.m1 {
+  margin: 5px;
+}
+
+.m2 {
+  margin: 10px;
+}
+
+.m3 {
+  margin: 15px;
+}
+
+.m4 {
+  margin: 20px;
+}
+
+.m5 {
+  margin: 25px;
+}
+
+.m6 {
+  margin: 30px;
+}
+
+.m8 {
+  margin: 40px;
+}
+
+.mtb2 {
+  margin: 10px 0px;
+}
+
+.mtb4 {
+  margin: 20px 0px;
+}
+
+.mtb8 {
+  margin: 40px 0px;
+}
