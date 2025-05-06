@@ -88,14 +88,16 @@ const signUp = async (req, res) => {
 
     const role = await Role.findOne({ where: { name: "manager" } });
 
+    const password_hash = await bcrypt.hash(password, 10);
+
+    const file_name = req.file?.filename;
+
     const company = await Company.create({
       name: company_name,
       description: company_description,
       address: company_address,
-      logo: "/company/" + req.file.filename,
+      logo: file_name ? "/company/" + file_name : null,
     });
-
-    const password_hash = await bcrypt.hash(password, 10);
 
     await User.create({
       email,
