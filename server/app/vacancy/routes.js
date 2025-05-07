@@ -11,6 +11,7 @@ const {
   deleteVacancy,
   updateVacancy,
   searchVacancy,
+  getAppliesByVacancy,
 } = require("./controllers");
 
 router.get("/experience", getAvailableExperience);
@@ -43,6 +44,12 @@ router.put(
   isManager,
   validateVacancy,
   updateVacancy
+);
+router.get(
+  "/:id/applies",
+  passport.authenticate("jwt", { session: false }),
+  isManager,
+  getAppliesByVacancy
 );
 
 module.exports = router;

@@ -5,6 +5,9 @@ const City = require("../region/City");
 const Specialization = require("../specializations/models/Specialization");
 const Experience = require("./models/Experience");
 const Vacancy = require("./models/Vacancy");
+const Apply = require("../applies/Apply");
+const Resume = require("../resume/models/Resume");
+const { NEW, INVITATION, DECLINED } = require("../applies/utils");
 
 const getAvailableExperience = async (req, res) => {
   const experience = await Experience.findAll();
@@ -223,6 +226,43 @@ const searchVacancy = async (req, res) => {
   }
 };
 
+const getAppliesByVacancy = async (req, res) => {
+  try {
+    const vacancy = await Vacancy.findByPk(req.params.id);
+
+    if (!vacancy) {
+      return res.status(404).send({ message: "Not Found" });
+    }
+
+    if (vacancy.user_id !== req.user.id) {
+      return res.status(403).send({ message: "Forbidden" });
+    }
+
+    const options = {
+      vacancy_id: vacancy.id,
+    };
+
+    if (
+      req.query.status &&
+      (req.query.status === NEW ||
+        req.query.status === INVITATION ||
+        req.query.status === DECLINED)
+    ) {
+      options.status = req.query.status;
+    }
+
+    const applies = await Apply.findAll({
+      where: options,
+      include: { model: Resume, as: "resume" },
+    });
+
+    return res.status(200).send({ applies });
+  } catch (error) {
+    console.error("Ошибка при получении списка заявок на вакансию:", error);
+    return res.status(500).send({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   getAvailableExperience,
   createVacancy,
@@ -231,4 +271,5 @@ module.exports = {
   deleteVacancy,
   updateVacancy,
   searchVacancy,
+  getAppliesByVacancy,
 };
