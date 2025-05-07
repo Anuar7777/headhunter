@@ -4,9 +4,11 @@ const {
   createApply,
   getEmployeeApplies,
   deleteApply,
+  confirmApply,
+  rejectApply,
 } = require("./controllers");
 const passport = require("passport");
-const { isEmployee } = require("../auth/middlewares");
+const { isEmployee, isManager } = require("../auth/middlewares");
 const { validateApply } = require("./middlewares");
 
 router.post(
@@ -27,6 +29,18 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   isEmployee,
   deleteApply
+);
+router.put(
+  "/:id/confirm",
+  passport.authenticate("jwt", { session: false }),
+  isManager,
+  confirmApply
+);
+router.put(
+  "/:id/reject",
+  passport.authenticate("jwt", { session: false }),
+  isManager,
+  rejectApply
 );
 
 module.exports = router;

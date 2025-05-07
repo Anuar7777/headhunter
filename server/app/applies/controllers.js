@@ -1,5 +1,5 @@
 const Apply = require("./Apply");
-const { NEW } = require("./utils");
+const { NEW, DECLINED, INVITATION } = require("./utils");
 const sendMail = require("../utils/sendMail");
 const Resume = require("../resume/models/Resume");
 const Vacancy = require("../vacancy/models/Vacancy");
@@ -80,8 +80,52 @@ const deleteApply = async (req, res) => {
   }
 };
 
+const confirmApply = async (req, res) => {
+  try {
+    const apply = await Apply.findByPk(req.params.id);
+
+    if (!apply) {
+      return res.status(404).send({ message: "Not Found" });
+    }
+
+    const auhtor_vacancy = await Vacancy.findByPk(apply.vacancy_id);
+    if (auhtor_vacancy.user_id !== req.user.id) {
+      return res.status(403).send({ message: "Forbidden" });
+    }
+
+    await apply.update({ status: INVITATION });
+    return res.status(200).send({ apply });
+  } catch (error) {
+    console.error("Ошибка при подтверждении заявки:", error);
+    return res.status(500).send({ message: "Ошибка сервера" });
+  }
+};
+
+const rejectApply = async (req, res) => {
+  try {
+    const apply = await Apply.findByPk(req.params.id);
+
+    if (!apply) {
+      return res.status(404).send({ message: "Not Found" });
+    }
+
+    const auhtor_vacancy = await Vacancy.findByPk(apply.vacancy_id);
+    if (auhtor_vacancy.user_id !== req.user.id) {
+      return res.status(403).send({ message: "Forbidden" });
+    }
+
+    await apply.update({ status: DECLINED });
+    return res.status(200).send({ apply });
+  } catch (error) {
+    console.error("Ошибка при отклонении заявки:", error);
+    return res.status(500).send({ message: "Ошибка сервера" });
+  }
+};
+
 module.exports = {
   createApply,
   getEmployeeApplies,
   deleteApply,
+  confirmApply,
+  rejectApply,
 };
