@@ -30,6 +30,7 @@ app.use("/api/languages", require("./app/languages/routes"));
 app.use("/api/resumes", require("./app/resume/routes"));
 app.use("/api/specializations", require("./app/specializations/routes"));
 app.use("/api/vacancy", require("./app/vacancy/routes"));
+app.use("/api/applies", require("./app/applies/routes"));
 
 app.get("/api", (req, res) => {
   res.status(200).send("OK");

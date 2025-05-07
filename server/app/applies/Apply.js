@@ -17,7 +17,7 @@ const Apply = sequelize.define(
   }
 );
 
-Resume.belongsTo(Resume, { foreignKey: "resume_id" });
-Resume.belongsTo(Vacancy, { foreignKey: "vacancy_id" });
+Apply.belongsTo(Resume, { foreignKey: "resume_id" });
+Apply.belongsTo(Vacancy, { foreignKey: "vacancy_id", as: "vacancy" });
 
 module.exports = Apply;
